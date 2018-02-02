@@ -1,5 +1,4 @@
 import pygame,smtplib
-#import ghub.frames as gFrames
 from pygame import *
 pygame.init()
 ## ^ Who really knows about that one lol
@@ -10,7 +9,9 @@ screen = pygame.Surface((640,480))
 
 class mainFrame(object):
     def __init__(self):
-        self.currentFrame = gFrames.frame("main")
+        self.currentFrame = "main"
+    def doUpdate(self):
+        disp.fill((200,0,0))
 
 class program(object):
     def __init__(self):
@@ -26,6 +27,7 @@ def sendMail(mailtext,mailusr,mailpass,mailaddrto):
     server.quit()
 
 theProgram=program()
+theMainFrame=mainFrame()
 
 def main():
     while theProgram.go>0:
@@ -40,9 +42,11 @@ def main():
         else:
             #NOT MINING
             pass
-    #currentFrame.update()
-    pygame.display.flip()
+        theMainFrame.doUpdate()
+        pygame.display.update()
 
 #Enter main loop
 if(__name__ == "__main__"):
-    main()	
+    main()
+
+pygame.display.quit()
