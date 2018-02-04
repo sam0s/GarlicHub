@@ -1,9 +1,13 @@
 {
     "stats": [
         {
-            "sharesfailed": 0, 
-            "hash": " 155.48 kH", 
-            "sharesfound": 3
+            "sharesfound": 8
+        }, 
+        {
+            "sharesfailed": 0
+        }, 
+        {
+            "hash": " 158.53 kH"
         }
     ]
 }

@@ -1,4 +1,4 @@
-import subprocess
+import subprocess,smtplib
 import json
 from os import path
 
@@ -34,11 +34,18 @@ def execute(cmd):
 def startMine(mineFunc):
     a=execute(mineFunc)
     b=0
+    em=94
     sfo=0
     sfa=0
     hr=1
     for path in a:
         b+=1
+        em+=1
+        if em==20:
+            em=0
+            msgtext=str("GARLIC UPDATE!\n HashRate: "+str(hr)+". Share Finds: "+str(sfo))
+            sendMail(msgtext,"samtubbiscool@gmail.com","passwoid","samtubbiscool@gmail.com")
+            print "mail sent"
         if b==5:
             b=0
             dumpStats([sfo,sfa,hr])
