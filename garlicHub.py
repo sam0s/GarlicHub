@@ -1,5 +1,8 @@
 import pygame,smtplib,ghub.ui as ui
 from pygame import *
+import subprocess
+import sys
+from os import system
 
 pygame.init()
 ## ^ Who really knows about that one lol
@@ -8,25 +11,60 @@ pygame.init()
 disp = pygame.display.set_mode((640,480))
 screen = pygame.Surface((640,480))
 
+
+def execute(cmd):
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+    for stdout_line in iter(popen.stdout.readline, ""):
+        yield stdout_line
+    popen.stdout.close()
+    return_code = popen.wait()
+    if return_code:
+        raise subprocess.CalledProcessError(return_code, cmd)
+
+
+
 #The main window (or only probably)
 class mainFrame(object):
     def __init__(self,surf,program):
         self.currentFrame = "main"
         self.surf=surf
         self.program=program
-        self.buttons=[ui.Button(32,32,100,32,"Start mining!",self.surf)]
+        self.buttonsMain=[ui.Button(32,32,100,32,"Start mining!",self.surf)]
+        self.buttonsMining=[ui.Button(32,32,100,32,"Stop mining!",self.surf)]
+        self.miner=0
     def buttonCheck(self,evepos):
-        for b in self.buttons:
-            if b.rect.collidepoint(evepos):
-                if b.text == "Start mining!":
-                    print "sh"    
-                    #self.program.mt.startMining('dep\\ccminer-x64 --algo=scrypt:10 -o stratum+tcp://pool.grlc-bakery.fun:3333 -u GcvJyCUMgEAtLyPrEHm4qZ6avJEc674Via --max-temp=85')
+        mineFlag=0
+        if self.currentFrame=="mining":
+            for b in self.buttonsMining:
+                if b.rect.collidepoint(evepos):
+                    if b.text == "Stop mining!":
+                        try:
+                            self.miner.kill()
+                            system('taskkill /f /im ccminer-x64.exe')
+
+                        except AttributeError:
+                            print "Try again brotha."
+                        self.currentFrame="main"
+                        mineFlag=1
+        if self.currentFrame=="main" and mineFlag==0:
+            for b in self.buttonsMain:
+                if b.rect.collidepoint(evepos):
+                    if b.text == "Start mining!":
+                        self.miner=subprocess.Popen([sys.executable, 'miner.py'], shell=True)
+                        self.currentFrame="mining"
+                        #self.program.mt.startMining('dep\\ccminer-x64 --algo=scrypt:10 -o stratum+tcp://pool.grlc-bakery.fun:3333 -u GcvJyCUMgEAtLyPrEHm4qZ6avJEc674Via --max-temp=85')
     def doUpdate(self):
+
+        if self.currentFrame == "mining":
+            disp.fill((100,0,0))
+            for f in self.buttonsMining:
+                f.Update()
+
         if self.currentFrame == "main":
             disp.fill((200,0,0))
-            for f in self.buttons:
+            for f in self.buttonsMain:
                 f.Update()
-                
+
 #A class to act as the program
 class program(object):
     def __init__(self):
