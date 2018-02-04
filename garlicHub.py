@@ -8,9 +8,9 @@ pygame.init()
 ## ^ Who really knows about that one lol
 ## include scalability down here V
 
-disp = pygame.display.set_mode((640,480))
+disp = pygame.display.set_mode((432,232))
 screen = pygame.Surface((640,480))
-
+clock = pygame.time.Clock()
 
 def execute(cmd):
     popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
@@ -29,10 +29,12 @@ class mainFrame(object):
         self.currentFrame = "main"
         self.surf=surf
         self.program=program
-        self.buttonsMain=[ui.Button(32,32,100,32,"Start mining!",self.surf)]
-        self.buttonsMining=[ui.Button(32,32,100,32,"Stop mining!",self.surf)]
+        self.buttonsMain=[ui.Button(166,16,100,32,"Start mining!",self.surf),ui.CheckBox(50,160,"eMail Update?",self.surf,size=32)]
+        self.buttonsMining=[ui.Button(166,16,100,32,"Stop mining!",self.surf)]
         self.miner=0
+        self.drawn=0
     def buttonCheck(self,evepos):
+        self.drawn=0
         mineFlag=0
         if self.currentFrame=="mining":
             for b in self.buttonsMining:
@@ -49,21 +51,27 @@ class mainFrame(object):
         if self.currentFrame=="main" and mineFlag==0:
             for b in self.buttonsMain:
                 if b.rect.collidepoint(evepos):
+                    if b.text == "eMail Update?":
+                        b.Check()
                     if b.text == "Start mining!":
                         self.miner=subprocess.Popen([sys.executable, 'miner.py'], shell=True)
                         self.currentFrame="mining"
                         #self.program.mt.startMining('dep\\ccminer-x64 --algo=scrypt:10 -o stratum+tcp://pool.grlc-bakery.fun:3333 -u GcvJyCUMgEAtLyPrEHm4qZ6avJEc674Via --max-temp=85')
     def doUpdate(self):
+        if self.drawn==0:
+            print "efe"
+            self.drawn=1
+            if self.currentFrame == "mining":
+                disp.fill((0,0,100))
+                for f in self.buttonsMining:
+                    f.Update()
 
-        if self.currentFrame == "mining":
-            disp.fill((100,0,0))
-            for f in self.buttonsMining:
-                f.Update()
-
-        if self.currentFrame == "main":
-            disp.fill((200,0,0))
-            for f in self.buttonsMain:
-                f.Update()
+            if self.currentFrame == "main":
+                disp.fill((0,0,150))
+                for f in self.buttonsMain:
+                    f.Update()
+            pygame.display.update()
+            
 
 #A class to act as the program
 class program(object):
@@ -95,7 +103,6 @@ def Main():
             if e.type == KEYUP and e.key == K_SPACE:
                 sendMail("ayo","samtubbiscool@gmail.com","","samtubbiscool@gmail.com")
         theMainFrame.doUpdate()
-        pygame.display.update()
     pygame.display.quit()
 
 
