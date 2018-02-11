@@ -1,0 +1,1 @@
+ccminer-x64 -d 1 -a lyra2v2 -o stratum+tcp://yiimp.ccminer.org:4533 -u VugccXXyZs4gMewKcGB9dMP4zZfo98KWzj -p c=VTC,stats --cpu-priority 3

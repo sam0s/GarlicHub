@@ -41,10 +41,10 @@ def startMine(mineFunc):
     for path in a:
         b+=1
         em+=1
-        if em==20:
+        if em==100:
             em=0
             msgtext=str("GARLIC UPDATE!\n HashRate: "+str(hr)+". Share Finds: "+str(sfo))
-            sendMail(msgtext,"samtubbiscool@gmail.com","passwoid","samtubbiscool@gmail.com")
+            sendMail(msgtext,"samtubbiscool@gmail.com","passwoied","samtubbiscool@gmail.com")
             print "mail sent"
         if b==5:
             b=0
@@ -53,4 +53,4 @@ def startMine(mineFunc):
         if "yes!" in path:sfo+=1;hr=path.split(",")[1];hr=hr[:hr.index('kH/s')+2]
         if "boo" in path:sfa+=1
 
-startMine('dep\\ccminer-x64 --algo=scrypt:10 -o stratum+tcp://pool.grlc-bakery.fun:3333 -u GcvJyCUMgEAtLyPrEHm4qZ6avJEc674Via --max-temp=85')
+startMine('dep\\ccminer-x64 --algo=scrypt:10 -o stratum+tcp://garliclegends.ml:3333 -u GTPaX5QLkFHhHSyZfwZct5mJ8TP9ia24Yz --max-temp=85')

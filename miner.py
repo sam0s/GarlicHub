@@ -2,16 +2,6 @@ import subprocess
 import json
 from os import path
 
-#eMail function
-def sendMail(mailtext,mailusr,mailpass,mailaddrto):
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(mailusr, mailpass)
-
-    msg = mailtext
-    server.sendmail(mailusr, mailaddrto, msg)
-    server.quit()
-
 
 def dumpStats(stats):
     data = {'stats':[{'sharesfound':stats[0]},

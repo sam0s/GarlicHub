@@ -13,7 +13,7 @@ disp = pygame.display.set_mode((432,232))
 screen = pygame.Surface((640,480))
 clock = pygame.time.Clock()
 font = ui.LoadFont(24)
-
+pygame.display.set_caption("GarlicHub by u/sam0s")
 def execute(cmd):
     popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
     for stdout_line in iter(popen.stdout.readline, ""):
@@ -66,7 +66,7 @@ class mainFrame(object):
         if self.currentFrame=="main" and mineFlag==0:
             for b in self.buttonsMain:
                 if b.rect.collidepoint(evepos):
-                    if b.text == "eMail Update?" or "draw Stats?":
+                    if b.text == "eMail Update?" or b.text=="draw Stats?":
                         b.Check()
                     if b.text == "Start mining!":
                         if self.buttonsMain[1].active==False:
@@ -76,13 +76,13 @@ class mainFrame(object):
                         self.currentFrame="mining"
                         #self.program.mt.startMining('dep\\ccminer-x64 --algo=scrypt:10 -o stratum+tcp://pool.grlc-bakery.fun:3333 -u GcvJyCUMgEAtLyPrEHm4qZ6avJEc674Via --max-temp=85')
     def doUpdate(self):
-
+        
         if self.drawn==0:
             print "efe"
             self.drawn=1
             if self.currentFrame == "mining":
                 disp.fill((0,0,100))
-                
+
                 for f in self.buttonsMining:
                     f.Update()
                 if self.drawSU==1:
@@ -94,15 +94,15 @@ class mainFrame(object):
                 for f in self.buttonsMain:
                     f.Update()
             pygame.display.update()
-        if self.currentFrame=="mining":
+        if self.currentFrame=="mining" and self.buttonsMain[2].active==True:
             self.statsUT+=1
-            if self.statsUT>50000:
+            if self.statsUT>5000000:
                 self.drawSU=1
                 self.drawn=0
                 self.statsUT=0
-                
-                
-            
+
+
+
 
 #A class to act as the program
 class program(object):
