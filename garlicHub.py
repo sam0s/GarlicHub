@@ -22,9 +22,7 @@ def execute(cmd):
     return_code = popen.wait()
     if return_code:
         raise subprocess.CalledProcessError(return_code, cmd)
-
-
-
+        
 #The main window (or only probably)
 class mainFrame(object):
     def __init__(self,surf,program):
@@ -37,6 +35,7 @@ class mainFrame(object):
         self.drawn=0
         self.statsUT=0
         self.drawSU=0
+        
     def statsUpdate(self):
         with open('currentStats.json') as json_data:
             d = json.load(json_data)
@@ -48,6 +47,7 @@ class mainFrame(object):
                 self.surf.blit(a,(100,100))
                 self.surf.blit(b,(100,150))
                 self.surf.blit(c,(100,200))
+                
     def buttonCheck(self,evepos):
         self.drawn=0
         mineFlag=0
@@ -75,8 +75,8 @@ class mainFrame(object):
                             self.miner=subprocess.Popen([sys.executable, 'minerEmail.py'], shell=True)
                         self.currentFrame="mining"
                         #self.program.mt.startMining('dep\\ccminer-x64 --algo=scrypt:10 -o stratum+tcp://pool.grlc-bakery.fun:3333 -u GcvJyCUMgEAtLyPrEHm4qZ6avJEc674Via --max-temp=85')
+   
     def doUpdate(self):
-        
         if self.drawn==0:
             print "efe"
             self.drawn=1
@@ -101,20 +101,14 @@ class mainFrame(object):
                 self.drawn=0
                 self.statsUT=0
 
-
-
-
 #A class to act as the program
 class program(object):
     def __init__(self):
         self.go=1
         self.stats={"sharesfound":0}
 
-
-
 theProgram=program()
 theMainFrame=mainFrame(disp,theProgram)
-
 
 def Main():
     while theProgram.go>0:
@@ -125,8 +119,6 @@ def Main():
                 theProgram.go=-1
         theMainFrame.doUpdate()
     pygame.display.quit()
-
-
 
 #Enter main loop
 if(__name__ == "__main__"):
