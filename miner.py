@@ -2,7 +2,6 @@ import subprocess
 import json
 from os import path
 
-
 def dumpStats(stats):
     data = {'stats':[{'sharesfound':stats[0]},
                     {'sharesfailed':stats[1]},
